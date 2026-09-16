@@ -2,37 +2,17 @@ name: DevOps CI Pipeline
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "*" ]
+  workflow_dispatch:
 
 jobs:
-  pipeline-job:
+  test-job:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Verify hello.txt file
+      - name: Simple verification test
         run: |
-          echo "Reading existing hello.txt file:"
-          cat hello.txt
-
-      - name: Execute automated test
-        run: |
-          if [ -f hello.txt ]; then
-            echo "SUCCESS: Test passed!"
-          else
-            echo "FAILED: File not found!" && exit 1
-          fi
-
-      - name: Generate build artifact
-        run: |
-          mkdir -p dist
-          echo "Build artifact compiled successfully" > dist/app.bin
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-build
-          path: dist/
-EOF
+          echo "GitHub Actions pipeline is active!"
+          ls -la
