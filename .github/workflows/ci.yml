@@ -1,0 +1,38 @@
+name: DevOps CI Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  pipeline-job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+
+      - name: Verify hello.txt file
+        run: |
+          echo "Reading existing hello.txt file:"
+          cat hello.txt
+
+      - name: Execute automated test
+        run: |
+          if [ -f hello.txt ]; then
+            echo "SUCCESS: Test passed!"
+          else
+            echo "FAILED: File not found!" && exit 1
+          fi
+
+      - name: Generate build artifact
+        run: |
+          mkdir -p dist
+          echo "Build artifact compiled successfully" > dist/app.bin
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-build
+          path: dist/
+EOF
